@@ -1,6 +1,6 @@
 ## Install
 ```bash
-curl -fsSL https://raw.githubusercontent.com/YOUR-USERNAME/zeek-installer/main/zeek-install.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/OneEyedOwl11/zeek-installer/main/zeek-install.sh | sudo bash
 ```
 
 ### Requirements
