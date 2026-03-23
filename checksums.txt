@@ -1,0 +1,13 @@
+curl -fsSL https://raw.githubusercontent.com/YOUR-USERNAME/zeek-installer/main/zeek-install.sh -o zeek-install.sh
+curl -fsSL https://raw.githubusercontent.com/YOUR-USERNAME/zeek-installer/main/checksums.txt -o checksums.txt
+sha256sum --check checksums.txt
+# Only run if check passes
+sudo bash zeek-install.sh
+```
+
+**Recommended repo structure**
+```
+zeek-installer/
+├── zeek-install.sh        ← the script
+├── checksums.txt          ← SHA256 of the current script
+└── README.md              ← one-liner install command, requirements, what it does

@@ -118,7 +118,7 @@ check_requirements() {
     ;;
   *)
     print_warning "This script is optimized for Ubuntu/Debian. Proceed with caution."
-    read -p "Continue anyway? (y/N): " -n 1 -r
+    read -p "Continue anyway? (y/N): " -n 1 -r </dev/tty
     echo
     if [[ ! $REPLY =~ ^[Yy]$ ]]; then
       exit 1
@@ -133,7 +133,7 @@ check_requirements() {
 
   if [ "$mem_gb" -lt 2 ]; then
     print_warning "Less than 2GB RAM detected. Compilation may fail or be very slow."
-    read -p "Continue anyway? (y/N): " -n 1 -r
+    read -p "Continue anyway? (y/N): " -n 1 -r </dev/tty
     echo
     if [[ ! $REPLY =~ ^[Yy]$ ]]; then
       exit 1
@@ -149,7 +149,7 @@ check_requirements() {
 
   if [ "$available_gb" -lt 5 ]; then
     print_warning "Less than 5GB disk space available. Installation may fail."
-    read -p "Continue anyway? (y/N): " -n 1 -r
+    read -p "Continue anyway? (y/N): " -n 1 -r </dev/tty
     echo
     if [[ ! $REPLY =~ ^[Yy]$ ]]; then
       exit 1
@@ -172,14 +172,14 @@ detect_interface() {
 
   if [ -n "$primary_interface" ]; then
     print_info "Auto-detected primary interface: $primary_interface"
-    read -p "Use $primary_interface for Zeek monitoring? (Y/n): " -n 1 -r
+    read -p "Use $primary_interface for Zeek monitoring? (Y/n): " -n 1 -r </dev/tty
     echo
     if [[ $REPLY =~ ^[Nn]$ ]]; then
-      read -p "Enter interface name: " primary_interface
+      read -p "Enter interface name: " primary_interface </dev/tty
     fi
   else
     print_warning "Could not auto-detect primary interface"
-    read -p "Enter interface name for Zeek monitoring: " primary_interface
+    read -p "Enter interface name for Zeek monitoring: " primary_interface </dev/tty
   fi
 
   # Validate interface exists
@@ -638,11 +638,13 @@ EOF
 
 # Main installation function
 main() {
-  # Print script header
+  # Print script header — plain text first, figlet runs after deps are installed
   clear
-  figlet -f small "$SCRIPT_NAME" 2>/dev/null || echo "$SCRIPT_NAME"
-  echo "Version: $SCRIPT_VERSION"
-  echo "Log file: $LOG_FILE"
+  echo "===================================================================="
+  echo "  $SCRIPT_NAME"
+  echo "  Version: $SCRIPT_VERSION"
+  echo "  Log file: $LOG_FILE"
+  echo "===================================================================="
   echo
 
   # Initialize log file
@@ -668,7 +670,7 @@ main() {
     print_status "Cleaned up previous source directory"
   fi
 
-  read -p "Continue with installation? (y/N): " -n 1 -r
+  read -p "Continue with installation? (y/N): " -n 1 -r </dev/tty
   echo
   if [[ ! $REPLY =~ ^[Yy]$ ]]; then
     print_info "Installation cancelled by user"
