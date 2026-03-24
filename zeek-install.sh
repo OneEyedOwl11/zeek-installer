@@ -197,9 +197,17 @@ create_zeek_user() {
   banner "Creating Zeek User"
 
   if id "$ZEEK_USER" &>/dev/null; then
-    print_warning "User $ZEEK_USER already exists"
+    print_warning "User $ZEEK_USER already exists -- skipping user creation"
   else
-    useradd -r -s /bin/false -d "$ZEEK_HOME" -c "Zeek Network Monitor" "$ZEEK_USER"
+    # If the group already exists from a previous failed/partial install,
+    # pass -g to reuse it. Without this, useradd errors and set -e kills
+    # the script even though the situation is perfectly recoverable.
+    if getent group "$ZEEK_USER" &>/dev/null; then
+      print_warning "Group $ZEEK_USER already exists -- reusing it"
+      useradd -r -s /bin/false -d "$ZEEK_HOME" -g "$ZEEK_USER" -c "Zeek Network Monitor" "$ZEEK_USER"
+    else
+      useradd -r -s /bin/false -d "$ZEEK_HOME" -c "Zeek Network Monitor" "$ZEEK_USER"
+    fi
     print_status "Created user: $ZEEK_USER"
   fi
 
